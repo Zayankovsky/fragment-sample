@@ -3,8 +3,10 @@ package com.example.myapplication
 import android.content.ComponentCallbacks2
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.BaseFragment
+import androidx.transition.Slide
 import kotlinx.android.synthetic.main.fragment_screen.*
 
 class ScreenFragment : BaseFragment(R.layout.fragment_screen), ComponentCallbacks2 {
@@ -14,6 +16,11 @@ class ScreenFragment : BaseFragment(R.layout.fragment_screen), ComponentCallback
     private val number by lazy(LazyThreadSafetyMode.NONE) { requireArguments().getInt(keyNumber) }
 
     private var clickCount = 0
+
+    init {
+        enterTransition = Slide(Gravity.END).setDuration(2000)
+        exitTransition = Slide(Gravity.START).setDuration(2000)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,23 +43,7 @@ class ScreenFragment : BaseFragment(R.layout.fragment_screen), ComponentCallback
             text.text = "Number #$number:${++clickCount}"
         }
         push.setOnClickListener {
-            if (number and 1 == 0) {
-                root?.push(
-                    number + 1,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left,
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right,
-                )
-            } else {
-                root?.push(
-                    number + 1,
-                    R.anim.slide_in_bottom,
-                    R.anim.stay_still,
-                    R.anim.stay_still,
-                    R.anim.slide_out_bottom,
-                )
-            }
+            root?.push(number + 1)
         }
         pop.setOnClickListener {
             root?.pop()

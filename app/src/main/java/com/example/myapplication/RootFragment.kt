@@ -1,7 +1,6 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import androidx.annotation.AnimRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
@@ -20,16 +19,9 @@ class RootFragment : Fragment(R.layout.fragment_root) {
         }
     }
 
-    fun push(
-        number: Int,
-        @AnimRes enterAnimation: Int,
-        @AnimRes exitAnimation: Int,
-        @AnimRes popEnterAnimation: Int,
-        @AnimRes popExitAnimation: Int,
-    ) {
+    fun push(number: Int) {
         val fragment = ScreenFragment.create(number)
         childFragmentManager.commit {
-            setCustomAnimations(enterAnimation, exitAnimation, popEnterAnimation, popExitAnimation)
             for (addedFragment in childFragmentManager.fragments) {
                 if (!addedFragment.isHidden) hide(addedFragment)
                 setMaxLifecycle(addedFragment, Lifecycle.State.STARTED)
